@@ -30,7 +30,7 @@ cd "Data Files"
 python To_Thinh_grade_the_exams.py
 ```
 
-Khi được hỏi, nhập tên lớp (ví dụ `class1` hoặc `class1.txt`).
+Khi được hỏi, nhập tên lớp (ví dụ `class1`, `class10`, `10` hoặc `class1.txt`).
 
 ### Cách 2: chạy từ thư mục gốc
 

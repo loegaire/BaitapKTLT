@@ -22,14 +22,28 @@ def prompt_for_class_file(data_dir: Path) -> tuple[Path, list[str]]:
 
     while True:
         user_value = input(
-            "Enter a class to grade (i.e. class1 for class1.txt): "
+            "Enter a class to grade (e.g. class1, class10, 10, or class1.txt): "
         ).strip()
 
         if not user_value:
             continue
 
-        filename = user_value if user_value.endswith(".txt") else f"{user_value}.txt"
-        file_path = data_dir / filename
+        # Flexible inputs:
+        # - "class10" -> class10.txt (in data_dir)
+        # - "10" -> class10.txt (in data_dir)
+        # - "foo.txt" -> foo.txt (in data_dir)
+        # - "./somewhere/foo.txt" or "/abs/foo.txt" -> use as-is
+        if "/" in user_value or "\\" in user_value:
+            candidate = Path(user_value)
+            file_path = candidate if candidate.is_absolute() else (data_dir / candidate)
+        else:
+            if user_value.lower().endswith(".txt"):
+                filename = user_value
+            elif user_value.isdigit():
+                filename = f"class{user_value}.txt"
+            else:
+                filename = f"{user_value}.txt"
+            file_path = data_dir / filename
 
         try:
             lines = file_path.read_text(encoding="utf-8").splitlines()
